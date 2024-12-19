@@ -27,8 +27,8 @@ interface Song {
   id: string;
 }
 
-const client_id = 'f8b957b592d74a6dacb876d35fbf8eaf'; 
-const client_secret = '44214d0fc6dd454d89bfba9af1e0cd11'; 
+const client_id = 'f8b957b592d74a6dacb876d35fbf8eaf';
+const client_secret = '44214d0fc6dd454d89bfba9af1e0cd11';
 
 const TopSongs = () => {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -47,7 +47,7 @@ const TopSongs = () => {
         }
       );
 
-      return response.data.access_token; 
+      return response.data.access_token;
     } catch (error) {
       console.error('Error fetching token:', error);
       setError('Failed to fetch access token');
