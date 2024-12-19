@@ -1,7 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
+import SearchBar from './search/searchbar'
 
 interface SpotifyPlaylistResponse {
   tracks: {
@@ -27,8 +29,8 @@ interface Song {
   id: string;
 }
 
-const client_id = 'f8b957b592d74a6dacb876d35fbf8eaf'; 
-const client_secret = '44214d0fc6dd454d89bfba9af1e0cd11'; 
+const client_id = 'f8b957b592d74a6dacb876d35fbf8eaf';
+const client_secret = '44214d0fc6dd454d89bfba9af1e0cd11';
 
 const TopSongs = () => {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -47,7 +49,7 @@ const TopSongs = () => {
         }
       );
 
-      return response.data.access_token; 
+      return response.data.access_token;
     } catch (error) {
       console.error('Error fetching token:', error);
       setError('Failed to fetch access token');
@@ -95,24 +97,39 @@ const TopSongs = () => {
   }
 
   return (
-    <div>
-      <h1>Top 10 Songs</h1>
-      <ul>
+    <div className="p-6 bg-gray-600 text-white min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-100">Top 10 Songs</h1>
+      <ul className="space-y-6">
+        <SearchBar />
         {songs.map((song) => (
-          <li key={song.id} style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-            <img src={song.image} alt={song.name} style={{ width: '50px', height: '50px', marginRight: '10px' }} />
+          <li
+            key={song.id}
+            className="flex items-center p-4 bg-gray-800 rounded-lg shadow-md hover:bg-gray-700 transition-all space-x-4"
+          >
+            <img
+              src={song.image}
+              alt={song.name}
+              className="w-12 h-12 rounded-full object-cover"
+            />
             <div>
-              <p><strong>{song.name}</strong></p>
-              <p>Artist: {song.artist}</p>
-              <p>Album: {song.album}</p>
-              <p>Song ID: {song.id}</p>
-              <Link href={`/song/${song.name}`}>More details</Link> {/* Link to song details */}
+              <p className="text-lg font-semibold">{song.name}</p>
+              <p className="text-sm text-gray-400">Artist: {song.artist}</p>
+              <p className="text-sm text-gray-400">Album: {song.album}</p>
+              <p className="text-sm text-gray-400">Song ID: {song.id}</p>
+              <Link
+                href={`/song/${song.name}`}
+                className="text-blue-400 hover:underline"
+              >
+                More details
+              </Link>
             </div>
           </li>
         ))}
       </ul>
     </div>
+
   );
 };
+
 
 export default TopSongs;
