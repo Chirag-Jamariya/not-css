@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Music Database (SoundCircle)
 
-## Getting Started
+A comprehensive database for all things music: Lyrics, Samples, Beats, and more.
 
-First, run the development server:
+## 🌟 Features Implemented
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Search Functionality**  
+   - A search bar on the homepage allows users to look up any song they want to learn about.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Top 10 Songs Globally**  
+   - The homepage displays a list of the top 10 globally trending songs.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Personalized Top 10**  
+   - Users can log in to view their personalized Top 10 songs based on their listening history.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Song Details**  
+   - By clicking "More Details" on a song, users can view:
+     - Song image.
+     - Song details including title, album, and artist information.
 
-## Learn More
+5. **Lyrics Display**  
+   - Users can also view the lyrics of a selected song for a more immersive experience.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎯 Why SoundCircle?
+As there aren't many websites where you can see the top 10 globally streaming songs as well as your own top 10 songs and see the details like album name, genre, artist name, album cover and lastly lyrics. Our website brings all features together providing the user with a complete user experience.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ How It Works
+- Uses spotify API to get the top 10 globally streamed songs as well as user top 10 songs.
+- Uses genius API  to get the info about the song in the query
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🧠 Challenges
+- Authentication for spotify
+- To optimize the interaction between the 2 APIs
+- To get the data from the API and display it in the front-end
+
+
+
+## 💡 Get Started
+
+Visit the homepage to explore the global top 10 songs or log in to discover your own personalized Top 10. Use the search bar to dive into details about any song and its lyrics!
+
