@@ -1,128 +1,157 @@
-"use client";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import axios from "axios";
+'use client';
 
-interface GeniusSearchResponse {
-  response: {
-    hits: {
-      result: {
-        id: number;
-        artist_names: string;
-        release_date_for_display: string;
-        full_title: string;
-        header_image_thumbnail_url: string;
-        url: string;
-      };
-    }[];
-  };
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'next/navigation';
+import styled from 'styled-components';
+
+interface Song {
+  id: string;
+  name: string;
+  artists: string[];
+  album: string;
+  image: string;
 }
 
-interface GeniusSongDetailsResponse {
-  response: {
-    song: {
-      album: {
-        name: string;
-      };
-      primary_artist: {
-        name: string;
-      };
-      writer_artists: {
-        name: string;
-      }[];
+const client_id = 'f8b957b592d74a6dacb876d35fbf8eaf';
+const client_secret = '44214d0fc6dd454d89bfba9af1e0cd11';
+
+const getToken = async (): Promise<string | null> => {
+  try {
+    const response = await axios.post<{ access_token: string }>(
+      'https://accounts.spotify.com/api/token',
+      new URLSearchParams({ grant_type: 'client_credentials' }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: `Basic ${btoa(`${client_id}:${client_secret}`)}`,
+        },
+      }
+    );
+
+    return response.data.access_token;
+  } catch (error) {
+    console.error('Error fetching token:', error);
+    return null;
+  }
+};
+
+const searchSongByName = async (query: string, token: string): Promise<Song | null> => {
+  try {
+    const response = await axios.get('https://api.spotify.com/v1/search', {
+      headers: { Authorization: `Bearer ${token}` },
+      params: { q: query, type: 'track', limit: 1 },
+    });
+
+    const track = response.data.tracks.items[0];
+    if (!track) return null;
+
+    return {
+      id: track.id, name: track.name, artists: track.artists.map((artist: any) => artist.name),
+      album: track.album.name,
+      image: track.album.images[0]?.url || '',
     };
-  };
-}
+  } catch (error) {
+    console.error('Error fetching song:', error);
+    return null;
+  }
+};
 
-const SongDetails = () => {
-  const [songDetails, setSongDetails] = useState<{
-    title: string;
-    artist: string;
-    releaseDate: string;
-    imageUrl: string;
-    lyricsUrl: string;
-    albumName: string;
-    primaryArtist: string;
-    writerArtists: string[];
-  } | null>(null);
+const SearchByName = () => {
+  const params = useParams();
+  const name = params.name;
+  const [song, setSong] = useState<Song | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  const router = useRouter();
-  const { name } = useParams(); // Get song name from URL
 
   useEffect(() => {
-    if (name) {
-      const songName = Array.isArray(name) ? name[0] : name;
+    const fetchSong = async () => {
+      if (!name) return;
+      setLoading(true);
+      setError(null);
 
-      const fetchSongDetails = async () => {
-        try {
-          // Fetch initial song data
-          const searchResponse = await axios.get<GeniusSearchResponse>(
-            `https://api.genius.com/search?q=${songName}&access_token=${process.env.NEXT_PUBLIC_GENIUS_ACCESS_TOKEN}`
-          );
+      const token = await getToken();
+      if (!token) {
+        setError('Failed to retrieve access token');
+        setLoading(false);
+        return;
+      }
 
-          const song = searchResponse.data.response.hits[0]?.result;
-          if (song) {
-            // Fetch additional song details using song ID
-            const songDetailsResponse = await axios.get<GeniusSongDetailsResponse>(
-              `https://api.genius.com/songs/${song.id}?access_token=${process.env.NEXT_PUBLIC_GENIUS_ACCESS_TOKEN}`
-            );
+      const result = await searchSongByName(name, token);
+      if (!result) {
+        setError('No song found');
+      }
 
-            const songDetailsData = songDetailsResponse.data.response.song;
+      setSong(result);
+      setLoading(false);
+    };
 
-            setSongDetails({
-              title: song.full_title,
-              artist: song.artist_names,
-              releaseDate: song.release_date_for_display,
-              imageUrl: song.header_image_thumbnail_url,
-              lyricsUrl: song.url,
-              albumName: songDetailsData.album?.name || "Unknown Album",
-              primaryArtist: songDetailsData.primary_artist.name,
-              writerArtists: songDetailsData.writer_artists.map((writer) => writer.name),
-            });
-          } else {
-            setError("Song not found on Genius");
-          }
-        } catch (error) {
-          console.error("Error fetching song details:", error);
-          setError("Failed to fetch song details");
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchSongDetails();
-    }
+    fetchSong();
   }, [name]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!songDetails) {
-    return <div>Song details not found.</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1>{songDetails.title}</h1>
-      <p>Artist: {songDetails.artist}</p>
-      <p>Primary Artist: {songDetails.primaryArtist}</p>
-      <p>Release Date: {songDetails.releaseDate}</p>
-      <p>Album: {songDetails.albumName}</p>
-      <img src={songDetails.imageUrl} alt={songDetails.title} style={{ width: "300px", borderRadius: "8px" }} />
-      <p>
-        <a href={songDetails.lyricsUrl} target="_blank" rel="noopener noreferrer">
-          View Lyrics on Genius
-        </a>
-      </p>
-    </div>
+    <Container>
+      <Title>Search Results</Title>
+      {song ? (
+        <SongContainer>
+          <SongImage src={song.image} alt={song.name} />
+          <SongDetails>
+            <SongName>{song.name}</SongName>
+            <SongArtists>Artists: {song.artists.join(', ')}</SongArtists>
+            <SongAlbum>Album: {song.album}</SongAlbum>
+          </SongDetails>
+        </SongContainer>
+      ) : (
+        <NoResults>No results found.</NoResults>
+      )}
+    </Container>
   );
 };
 
-export default SongDetails;
+const Container = styled.div`
+  padding: 20px;
+`;
+
+const Title = styled.h1`
+  font-size: 24px;
+  margin-bottom: 20px;
+`;
+
+const SongContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const SongImage = styled.img`
+  width: 150px;
+  height: 150px;
+  margin-right: 20px;
+`;
+
+const SongDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const SongName = styled.p`
+  font-weight: bold;
+  font-size: 18px;
+`;
+
+const SongArtists = styled.p`
+  font-size: 16px;
+`;
+
+const SongAlbum = styled.p`
+  font-size: 16px;
+`;
+
+const NoResults = styled.p`
+  font-size: 16px;
+  color: red;
+`;
+
+export default SearchByName;
