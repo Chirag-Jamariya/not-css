@@ -1,4 +1,5 @@
 'use client';
+import SearchBar from './search/searchbar';
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -174,55 +175,77 @@ const SpotifyApp = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
-      <h1>Spotify Playlist & User Top Songs</h1>
-      {userLoading ? (
-        <div>Loading your top songs...</div>
-      ) : userSongs.length === 0 ? (
-        <>
-          <h2>Top 10 Songs Globally</h2>
-          <ul>
-            {songs.map((song) => (
-              <li key={song.id} style={{ display: 'flex', marginBottom: '10px' }}>
-                <img src={song.image} alt={song.name} style={{ width: '50px', height: '50px', marginRight: '10px' }} />
-                <div>
-                  <p>
-                    <strong>{song.name}</strong>
-                  </p>
-                  <p>Artists: {song.artists.join(', ')}</p>
-                  <p>Album: {song.album}</p>
-                  <Link href={`/song/${(song.name)}`} passHref>
-                    <button>More Details</button>
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <button onClick={handleLogin}>Login to see your top songs</button>
-        </>
-      ) : (
-        <>
-          <h2>Your Top 10 Songs</h2>
-          <ul>
-            {userSongs.map((song) => (
-              <li key={song.id} style={{ display: 'flex', marginBottom: '10px' }}>
-                <img src={song.image} alt={song.name} style={{ width: '50px', height: '50px', marginRight: '10px' }} />
-                <div>
-                  <p>
-                    <strong>{song.name}</strong>
-                  </p>
-                  <p>Artists: {song.artists.join(', ')}</p>
-                  <p>Album: {song.album}</p>
-                  <Link href={`/song/${(song.name)}`} passHref>
-                    <button>More Details</button>
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-    </div>
+    <div className="p-6 bg-black text-white min-h-screen">
+      <SearchBar/>
+  <h1 className="text-3xl font-bold text-center text-yellow-400 mb-6">Spotify Playlist & User Top Songs</h1>
+
+  {userLoading ? (
+    <div className="text-center text-white">Loading your top songs...</div>
+  ) : userSongs.length === 0 ? (
+    <>
+      <h2 className="text-2xl font-bold text-center text-white mb-4">Top 10 Songs Globally</h2>
+      <ul className="space-y-6">
+        {songs.map((song) => (
+          <li
+            key={song.id}
+            className="flex items-center p-4 bg-gray-800 rounded-lg shadow-md hover:bg-gray-700 transition-all"
+          >
+            <img
+              src={song.image}
+              alt={song.name}
+              className="w-16 h-16 rounded-md object-cover mr-6"
+            />
+            <div>
+              <p className="text-lg font-semibold text-white">{song.name}</p>
+              <p className="text-sm text-gray-400">Artists: {song.artists.join(', ')}</p>
+              <p className="text-sm text-gray-400">Album: {song.album}</p>
+              <Link href={`/song/${song.name}`} passHref>
+                <button className="mt-2 px-4 py-2 bg-yellow-500 text-black rounded-md hover:bg-yellow-400 transition-all">
+                  More Details
+                </button>
+              </Link>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <button
+        onClick={handleLogin}
+        className="mt-6 px-6 py-2 bg-yellow-500 text-black font-semibold rounded-md hover:bg-yellow-400 transition-all"
+      >
+        Login to see your top songs
+      </button>
+    </>
+  ) : (
+    <>
+      <h2 className="text-2xl font-bold text-center text-white mb-4">Your Top 10 Songs</h2>
+      <ul className="space-y-6">
+        {userSongs.map((song) => (
+          <li
+            key={song.id}
+            className="flex items-center p-4 bg-gray-800 rounded-lg shadow-md hover:bg-gray-700 transition-all"
+          >
+            <img
+              src={song.image}
+              alt={song.name}
+              className="w-16 h-16 rounded-md object-cover mr-6"
+            />
+            <div>
+              <p className="text-lg font-semibold text-white">{song.name}</p>
+              <p className="text-sm text-gray-400">Artists: {song.artists.join(', ')}</p>
+              <p className="text-sm text-gray-400">Album: {song.album}</p>
+              <Link href={`/song/${song.name}`} passHref>
+                <button className="mt-2 px-4 py-2 bg-yellow-500 text-black rounded-md hover:bg-yellow-400 transition-all">
+                  More Details
+                </button>
+              </Link>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+</div>
+
   );
 };
 

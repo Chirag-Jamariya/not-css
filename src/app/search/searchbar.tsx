@@ -17,6 +17,7 @@ const SearchBar = () => {
           marginRight: '10px',
           border: '1px solid #ccc',
           borderRadius: '5px',
+          color:'black'
         }}
       />
       {searchQuery.trim() ? (
