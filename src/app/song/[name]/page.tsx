@@ -135,9 +135,8 @@ const SongDetails = () => {
           {[1, 2, 3, 4, 5].map((star) => (
             <button
               key={star}
-              className={`text-3xl transition-all ${
-                rating && rating >= star ? "text-yellow-500" : "text-gray-500 hover:text-yellow-400"
-              }`}
+              className={`text-3xl transition-all ${rating && rating >= star ? "text-yellow-500" : "text-gray-500 hover:text-yellow-400"
+                }`}
               onClick={() => handleRating(star)}
             >
               ★
@@ -167,18 +166,19 @@ const SongDetails = () => {
           </p>
         )}
       </div>
-    <div>
-      <h1>{songDetails.title}</h1>
-      <p>Artist: {songDetails.artist}</p>
-      <p>Primary Artist: {songDetails.primaryArtist}</p>
-      <p>Release Date: {songDetails.releaseDate}</p>
-      <p>Album: {songDetails.albumName}</p>
-      <img src={songDetails.imageUrl} alt={songDetails.title} style={{ width: '300px' }} />
-      <p>
-        <a href={songDetails.lyricsUrl} target="_blank" rel="noopener noreferrer">
-          View Lyrics on Genius
-        </a>
-      </p>
+      <div>
+        <h1>{songDetails.title}</h1>
+        <p>Artist: {songDetails.artist}</p>
+        <p>Primary Artist: {songDetails.primaryArtist}</p>
+        <p>Release Date: {songDetails.releaseDate}</p>
+        <p>Album: {songDetails.albumName}</p>
+        <img src={songDetails.imageUrl} alt={songDetails.title} style={{ width: '300px' }} />
+        <p>
+          <a href={songDetails.lyricsUrl} target="_blank" rel="noopener noreferrer">
+            View Lyrics on Genius
+          </a>
+        </p>
+      </div>
     </div>
   );
 };
