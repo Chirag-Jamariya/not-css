@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@green-code/music-track-data": "^2.0.3",
     "axios": "^1.7.9",
     "next": "15.1.2",
     "react": "^19.0.0",
