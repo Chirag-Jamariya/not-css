@@ -13,6 +13,19 @@ interface Song {
   image: string;
 }
 
+interface SpotifyTrack {
+  id: string;
+  name: string;
+  artists: { name: string }[];
+  album: { name: string; images: { url: string }[] };
+}
+
+interface SpotifyResponse {
+  tracks: {
+    items: SpotifyTrack[];
+  };
+}
+
 const client_id = 'f8b957b592d74a6dacb876d35fbf8eaf';
 const client_secret = '44214d0fc6dd454d89bfba9af1e0cd11';
 
@@ -38,7 +51,7 @@ const getToken = async (): Promise<string | null> => {
 
 const searchSongByName = async (query: string, token: string): Promise<Song | null> => {
   try {
-    const response = await axios.get('https://api.spotify.com/v1/search', {
+    const response = await axios.get<SpotifyResponse>('https://api.spotify.com/v1/search', {
       headers: { Authorization: `Bearer ${token}` },
       params: { q: query, type: 'track', limit: 1 },
     });
@@ -47,7 +60,9 @@ const searchSongByName = async (query: string, token: string): Promise<Song | nu
     if (!track) return null;
 
     return {
-      id: track.id, name: track.name, artists: track.artists.map((artist: any) => artist.name),
+      id: track.id,
+      name: track.name,
+      artists: track.artists.map((artist) => artist.name),
       album: track.album.name,
       image: track.album.images[0]?.url || '',
     };
@@ -59,7 +74,7 @@ const searchSongByName = async (query: string, token: string): Promise<Song | nu
 
 const SearchByName = () => {
   const params = useParams();
-  const name = params.name;
+  const name = Array.isArray(params.name) ? params.name[0] : params.name;
   const [song, setSong] = useState<Song | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -94,7 +109,7 @@ const SearchByName = () => {
 
   return (
     <Container>
-      <Title>Search Results</Title>
+      <Title>Search Results for "{name}"</Title>
       {song ? (
         <SongContainer>
           <SongImage src={song.image} alt={song.name} />
