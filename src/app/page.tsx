@@ -178,6 +178,9 @@ const SpotifyApp = () => {
     <div className="p-6 bg-black text-white min-h-screen">
       <SearchBar/>
   <h1 className="text-3xl font-bold text-center text-yellow-400 mb-6">Spotify Playlist & User Top Songs</h1>
+  <p className="text-2xl font-semibold text-center text-white p-4 rounded-lg shadow-md">
+  Hey, this is our project, this is what we do
+</p>
 
   {userLoading ? (
     <div className="text-center text-white">Loading your top songs...</div>

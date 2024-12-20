@@ -17,7 +17,8 @@ const SearchBar = () => {
           marginRight: '10px',
           border: '1px solid #ccc',
           borderRadius: '5px',
-          color:'black'
+          color:'black',
+          
         }}
       />
       {searchQuery.trim() ? (
@@ -25,8 +26,8 @@ const SearchBar = () => {
           <button
             style={{
               padding: '10px 20px',
-              backgroundColor: '#0070f3',
-              color: '#ffffff',
+              backgroundColor: '#facc15',
+              color: '#000000',
               border: 'none',
               borderRadius: '5px',
               cursor: 'pointer',
@@ -40,8 +41,8 @@ const SearchBar = () => {
           disabled
           style={{
             padding: '10px 20px',
-            backgroundColor: '#cccccc',
-            color: '#ffffff',
+            backgroundColor: '#facc15',
+            color: '#000000',
             border: 'none',
             borderRadius: '5px',
             cursor: 'not-allowed',

@@ -125,7 +125,7 @@ const SongDetails = () => {
 
   return (
     <>
-      <div style={{ textAlign: "center", padding: "20px" }}>
+      {/* <div style={{ textAlign: "center", padding: "20px" }}>
         <h1>{songDetails.title}</h1>
         <p>Artist: {songDetails.artist}</p>
         <p>Primary Artist: {songDetails.primaryArtist}</p>
@@ -133,11 +133,9 @@ const SongDetails = () => {
         <p>Album: {songDetails.albumName}</p>
         <img src={songDetails.imageUrl} alt={songDetails.title} style={{ width: "300px", borderRadius: "8px" }} />
         <p>
-          <a href={songDetails.lyricsUrl} target="_blank" rel="noopener noreferrer">
-            View Lyrics on Genius
-          </a>
+
         </p>
-      </div>
+      </div> */}
       <div className="p-6 bg-gray-900 text-white min-h-screen flex flex-col items-center">
         <h1 className="text-4xl font-bold mb-4 text-center text-gray-100">{songDetails.title}</h1>
         <p className="text-lg text-gray-300 mb-2">Artist: {songDetails.artist}</p>
@@ -147,6 +145,9 @@ const SongDetails = () => {
           alt={songDetails.title}
           className="w-72 h-auto rounded-lg shadow-lg object-cover"
         />
+                  <a href={songDetails.lyricsUrl} target="_blank" rel="noopener noreferrer">
+            View Lyrics on Genius
+          </a>
 
         {/* Ratings Section */}
         <div className="mt-6">
