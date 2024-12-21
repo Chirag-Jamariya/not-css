@@ -1,9 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import axios from 'axios';
-import Link from 'next/link';
-import SearchBar from './search/searchbar'
 
 const client_id = 'b7c2ca4230194b81aea3585a001d106a';
 const client_secret = '5a30555a90d542a1b69bfdaeebad56b3';
