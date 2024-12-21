@@ -120,6 +120,7 @@ const SpotifyApp = () => {
   useEffect(() => {
     const fetchSongs = async () => {
       const accessToken = await getToken();
+      console.log(token);
       if (!accessToken) {
         setError('Failed to fetch access token');
         setLoading(false);
