@@ -180,7 +180,7 @@ const SpotifyApp = () => {
         <div>Loading your top songs...</div>
       ) : userSongs.length === 0 ? (
         <>
-          <h2>Top 10 Songs from Playlist</h2>
+          <h2>Top 10 Songs Globally</h2>
           <ul>
             {songs.map((song) => (
               <li key={song.id} style={{ display: 'flex', marginBottom: '10px' }}>
