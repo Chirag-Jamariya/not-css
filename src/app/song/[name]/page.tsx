@@ -50,7 +50,7 @@ const SongDetails = () => {
   const [rating, setRating] = useState<number | null>(null); // Store user rating
   const [ratingInput, setRatingInput] = useState<string>(""); // Input field value
 
-  const router = useRouter();
+  //  const router = useRouter();
   const { name } = useParams(); // Get song name from URL
 
   useEffect(() => {
@@ -145,9 +145,9 @@ const SongDetails = () => {
           alt={songDetails.title}
           className="w-72 h-auto rounded-lg shadow-lg object-cover"
         />
-                  <a href={songDetails.lyricsUrl} target="_blank" rel="noopener noreferrer">
-            View Lyrics on Genius
-          </a>
+        <a href={songDetails.lyricsUrl} target="_blank" rel="noopener noreferrer">
+          View Lyrics on Genius
+        </a>
 
         {/* Ratings Section */}
         <div className="mt-6">
